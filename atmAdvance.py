@@ -1,3 +1,5 @@
+from database import DatabaseCnnection
+
 class AccountBank:
     def __init__(self, username, account_number, account_balance=0, pin="123456"):
         self.username = username

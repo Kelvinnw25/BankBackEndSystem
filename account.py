@@ -1,4 +1,4 @@
-from database import DatabaseConnection
+from database import databaseConnection
 
 class AccountBank:
     def __init__(self, username, password, account_number, account_balance=0, pin="123456"):
@@ -54,11 +54,7 @@ class AccountBank:
         else:
             print("Transfer failed: Insufficient balance or invalid account")
 
-    def showMenuGuest(self):
-        print("Welcome to the ATM System!")
-        choice = input("Login or Signup?: ").lower()
-
-    def showMenuUser(self):
+    def showMenu(self):
         print(f"Welcome, {self.username}!")
         print("1. Check Balance")
         print("2. Deposit")
@@ -66,45 +62,3 @@ class AccountBank:
         print("4. Transfer")
         print("5. Transaction History")
         print("6. Logout")
-
-    def run(self):
-        self.showMenuGuest()
-        if choice == "login":
-            usernameInput = input("Enter your username: ")
-            passwordInput = input("Enter your password: ")
-        elif choice == "signup":
-            usernameInput = input("Enter your username: ")
-            passwordInput = input("Enter your password: ")
-            account_number = input("Enter your account number: ")
-            pin = input("Enter your pin: ")
-            new_account = AccountBank(usernameInput, passwordInput, account_number, pin=pin)
-            print(f"Account created successfully for {usernameInput}!")
-            return new_account
-
-        option = 0
-        while True:
-            self.showMenuUser()
-            option = int(input("Enter your option: "))
-            if option == 1:
-                print("saldo lu sekian...")
-            elif option == 2:
-                print("udah masuk gan")
-            elif option == 3:
-                print("udah keluar gan")
-            elif option == 4:
-                print("udah kekirim gan")
-            elif option == 5:
-                print("nih historynya")
-            elif option == 6:
-                print("Logging out...")
-                break
-            else:
-                print("Your input isn't valid")
-
-
-
-
-# Example usage
-
-
-

@@ -1,8 +1,9 @@
-from database import DatabaseCnnection
+from database import DatabaseConnection
 
 class AccountBank:
-    def __init__(self, username, account_number, account_balance=0, pin="123456"):
+    def __init__(self, username, password, account_number, account_balance=0, pin="123456"):
         self.username = username
+        self.password = password
         self.account_number = account_number
         self.account_balance = account_balance
         self.pin = pin
@@ -10,19 +11,6 @@ class AccountBank:
 
     def __str__(self): # untuk representasi string dari objek
         return f"AccountBank(username={self.username}, account_number={self.account_number}, account_balance={self.account_balance})"
-
-    def save_to_file(self, file_name):
-        with open("database.txt", "a") as file: # a untuk append ke file
-            file.write(f"{self.username}, {self.account_number}, {self.account_balance}, {self.pin}\n")
-
-    def read_from_file(file_name):
-        account_list = []
-        with open("file_name", "r") as file:
-            for line in file:
-                username, account_number, account_balance, pin = line.strip().split(", ")
-                account = AccountBank(username, account_number, account_balance, pin)
-                account_list.append(account)
-        return account_list
     
     def show_info(self):
         print(f"Username: {self.username}\nAccount Number: {self.account_number}\nAccount Balance: {self.account_balance}")
@@ -66,8 +54,12 @@ class AccountBank:
         else:
             print("Transfer failed: Insufficient balance or invalid account")
 
-    def showMenu(self):
-        print("Welcome, Kelvin")
+    def showMenuGuest(self):
+        print("Welcome to the ATM System!")
+        choice = input("Login or Signup?: ").lower()
+
+    def showMenuUser(self):
+        print(f"Welcome, {self.username}!")
         print("1. Check Balance")
         print("2. Deposit")
         print("3. Withdraw")
@@ -76,9 +68,22 @@ class AccountBank:
         print("6. Logout")
 
     def run(self):
+        self.showMenuGuest()
+        if choice == "login":
+            usernameInput = input("Enter your username: ")
+            passwordInput = input("Enter your password: ")
+        elif choice == "signup":
+            usernameInput = input("Enter your username: ")
+            passwordInput = input("Enter your password: ")
+            account_number = input("Enter your account number: ")
+            pin = input("Enter your pin: ")
+            new_account = AccountBank(usernameInput, passwordInput, account_number, pin=pin)
+            print(f"Account created successfully for {usernameInput}!")
+            return new_account
+
         option = 0
         while True:
-            self.showMenu()
+            self.showMenuUser()
             option = int(input("Enter your option: "))
             if option == 1:
                 print("saldo lu sekian...")
@@ -100,12 +105,6 @@ class AccountBank:
 
 
 # Example usage
-
-#akunKelvin = AccountBank("kelvinnw25", 12345678, 500000, "250305")
-account_list = AccountBank.read_from_file("database.txt")
-
-for akun in account_list:
-    akun
 
 
 

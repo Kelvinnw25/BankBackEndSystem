@@ -1,2 +1,2 @@
-def DatabaseCnnection():
+def DatabaseConnection():
     pass

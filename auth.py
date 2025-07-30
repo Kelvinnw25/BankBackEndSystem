@@ -5,26 +5,41 @@ from database import databaseConnection
 users = {}  # key: username, value: AccountBank object
 
 def signup():
+    # Initialize database connection
+    db = databaseConnection()
+
+    # input user details
+    print("=== Sign Up ===")
     username = input("Enter username: ")
-    if username in users:
-        print("Username already exists.")
-        return None
-    
     password = input("Enter password: ")
     account_number = input("Enter account number: ")
-    pin = input("Enter pin: ")
-    new_user = AccountBank(username, password, account_number, pin=pin)
-    users[username] = new_user
+    pin = input("Set your 6-digit pin: ")
+
+    # create account
+    account = AccountBank(username, password, account_number, pin=pin)
+    db.create_account(account.username, account.password, account.account_number, account.account_balance, account.pin)
+
     print("Signup successful!")
-    return new_user
+    db.close()
+    return account
 
 def login():
+    # Initialize database connection
+    db = databaseConnection()
+
+    # input user details
+    print("=== Sign Up ===")    
     username = input("Enter username: ")
     password = input("Enter password: ")
-    user = users.get(username)
-    if user and user.password == password:
+
+    # get account from database
+    data = db.get_account(username, password)
+    db.close()
+
+    if data:
+        username, password, account_number, account_balance, pin = data
         print("Login successful!")
-        return user
+        return AccountBank(username, password, account_number, account_balance, pin)
     else:
-        print("Invalid username or password.")
+        print("Login failed! Invalid username or password.")
         return None

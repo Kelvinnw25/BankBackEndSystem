@@ -1,13 +1,13 @@
 from database import databaseConnection
 
 class AccountBank:
-    def __init__(self, username, password, account_number, account_balance=0, pin="123456"):
+    # __init__ using hinting method
+    def __init__(self, username: str, password: str, account_number: str, account_balance: float = 0.00, pin: str = None):
         self.username = username
         self.password = password
         self.account_number = account_number
         self.account_balance = account_balance
         self.pin = pin
-        self.save_to_file("database.txt")
 
     def __str__(self): # untuk representasi string dari objek
         return f"AccountBank(username={self.username}, account_number={self.account_number}, account_balance={self.account_balance})"

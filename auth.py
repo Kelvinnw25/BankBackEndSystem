@@ -1,9 +1,6 @@
 from account import AccountBank
 from database import databaseConnection
 
-# Simulasi database sementara
-users = {}  # key: username, value: AccountBank object
-
 def signup():
     # Initialize database connection
     db = databaseConnection()

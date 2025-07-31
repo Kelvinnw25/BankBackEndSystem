@@ -6,7 +6,6 @@ def run():
     print("Welcome to the ATM System!")
     user = None
 
-    # login & signup loop
     while user is None:
         choice = input("Login or Signup?: ").lower()
         if choice == "login":
@@ -14,7 +13,7 @@ def run():
         elif choice == "signup":
             user = signup()
             print("\nPlease login again")
-            run()  # Restart the program after signup
+            run()  #restart
         else:
             print("Invalid choice. Please try again.")
 
@@ -28,12 +27,12 @@ def run():
         elif option == 3:
             user.withdraw(float(input("Enter amount to withdraw: ")))
         elif option == 4:
-            #Still errorrrrrrrrr
             user.transfer(float(input("Enter amount to transfer: ")), (input("Enter recipient's account number: ")))
         elif option == 5:
             print("nih historynya")
         elif option == 6:
             print("Logging out...\n")
-            run()  # Restart the program
+            user.db.close()
+            run()  #restart
         else:
             print("Your input invalid")

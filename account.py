@@ -8,34 +8,15 @@ class AccountBank:
         self.account_number = account_number
         self.account_balance = account_balance
         self.pin = pin
-
-    def __str__(self): # untuk representasi string dari objek
-        return f"AccountBank(username={self.username}, account_number={self.account_number}, account_balance={self.account_balance})"
+        self.db = DatabaseConnection()
     
-    def show_info(self):
-        print(f"Username: {self.username}\nAccount Number: {self.account_number}\nAccount Balance: {self.account_balance}")
-        print("Do you want to see your pin too?")
-        answer = ""
-        while answer != "yes" or answer != "no":
-            answer = (input("YES/NO\n")).lower()
-            if answer == "yes":
-                print(f"Here's your account pin: {self.pin}")
-                break
-            elif answer == "no":
-                print("Okay, sure thanks")
-                break
-            else:
-                print("Your input invalid")
-
     def balance_check(self):
         print(f"Account balance for {self.username} ({self.account_number}) is: Rp. {self.account_balance}")
 
     def deposit(self, amount):
         if amount > 0:
             self.account_balance += amount
-            db = DatabaseConnection()
-            db.update_balance(self.account_number, self.account_balance)
-            db.close()
+            self.db.update_balance(self.account_number, self.account_balance)
             print(f"Rp. {amount} transferred to your bank account")
             print(f"Now, your account balance is: Rp. {self.account_balance:,}")
         else:
@@ -44,9 +25,7 @@ class AccountBank:
     def withdraw(self, amount):
         if amount > 0 and amount <= self.account_balance:
             self.account_balance -= amount
-            db = DatabaseConnection()
-            db.update_balance(self.account_number, self.account_balance)
-            db.close()
+            self.db.update_balance(self.account_number, self.account_balance)
             print(f"Your withdrawal of Rp. {amount} has been succesful")
             print(f"Now, your account balance is: Rp. {self.account_balance:,}")
         else:
@@ -59,6 +38,21 @@ class AccountBank:
             print(f"Transfer to {recipient_account.username} from {self.username} has been successful")
         else:
             print("Transfer failed: Insufficient balance or invalid account")
+
+    def show_info(self):
+        print(f"Username: {self.username}\nAccount Number: {self.account_number}\nAccount Balance: {self.account_balance}")
+        print("Do you want to see your pin too?")
+        answer = ""
+        while answer not in ("yes", "no"):
+            answer = (input("YES/NO\n")).lower()
+            if answer == "yes":
+                print(f"Here's your account pin: {self.pin}")
+                break
+            elif answer == "no":
+                print("Okay, sure thanks")
+                break
+            else:
+                print("Your input invalid")
 
     def showMenu(self):
         print(f"\nWelcome, {self.username}!")

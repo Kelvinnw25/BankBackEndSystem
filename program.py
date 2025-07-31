@@ -1,4 +1,4 @@
-from database import databaseConnection
+from database import DatabaseConnection
 from account import AccountBank
 from auth import signup, login
 
@@ -13,7 +13,8 @@ def run():
             user = login()
         elif choice == "signup":
             user = signup()
-            print("please login again")
+            print("\nPlease login again")
+            run()  # Restart the program after signup
         else:
             print("Invalid choice. Please try again.")
 
@@ -31,10 +32,7 @@ def run():
         elif option == 5:
             print("nih historynya")
         elif option == 6:
-            print("Logging out...")
-            break
+            print("Logging out...\n")
+            run()  # Restart the program
         else:
             print("Your input invalid")
-
-
-

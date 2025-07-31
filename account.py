@@ -1,4 +1,4 @@
-from database import databaseConnection
+from database import DatabaseConnection
 
 class AccountBank:
     # __init__ using hinting method
@@ -55,7 +55,7 @@ class AccountBank:
             print("Transfer failed: Insufficient balance or invalid account")
 
     def showMenu(self):
-        print(f"Welcome, {self.username}!")
+        print(f"\nWelcome, {self.username}!")
         print("1. Check Balance")
         print("2. Deposit")
         print("3. Withdraw")

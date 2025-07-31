@@ -1,12 +1,12 @@
 from account import AccountBank
-from database import databaseConnection
+from database import DatabaseConnection
 
 def signup():
     # Initialize database connection
-    db = databaseConnection()
+    db = DatabaseConnection()
 
     # input user details
-    print("=== Sign Up ===")
+    print("\n=== Sign Up ===")
     username = input("Enter username: ")
     password = input("Enter password: ")
     account_number = input("Enter account number: ")
@@ -22,10 +22,10 @@ def signup():
 
 def login():
     # Initialize database connection
-    db = databaseConnection()
+    db = DatabaseConnection()
 
     # input user details
-    print("=== Sign Up ===")    
+    print("\n=== Login ===")    
     username = input("Enter username: ")
     password = input("Enter password: ")
 

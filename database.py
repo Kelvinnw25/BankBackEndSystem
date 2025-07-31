@@ -23,3 +23,8 @@ class DatabaseConnection:
     def close(self):
         self.cursor.close()
         self.conn.close()
+
+    def update_balance(self, account_number, new_balance):
+        sql = "UPDATE accounts SET account_balance = %s WHERE account_number = %s"
+        self.cursor.execute(sql, (new_balance, account_number))
+        self.conn.commit()

@@ -22,13 +22,14 @@ def run():
         user.showMenu()
         option = int(input("Enter your option: "))
         if option == 1:
-            print("saldo lu sekian...")
+            user.balance_check()
         elif option == 2:
-            print("udah masuk gan")
+            user.deposit(float(input("Enter amount to deposit: ")))
         elif option == 3:
-            print("udah keluar gan")
+            user.withdraw(float(input("Enter amount to withdraw: ")))
         elif option == 4:
-            print("udah kekirim gan")
+            #Still errorrrrrrrrr
+            user.transfer(float(input("Enter amount to transfer: ")), (input("Enter recipient's account number: ")))
         elif option == 5:
             print("nih historynya")
         elif option == 6:

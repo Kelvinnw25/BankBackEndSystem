@@ -33,6 +33,9 @@ class AccountBank:
     def deposit(self, amount):
         if amount > 0:
             self.account_balance += amount
+            db = DatabaseConnection()
+            db.update_balance(self.account_number, self.account_balance)
+            db.close()
             print(f"Rp. {amount} transferred to your bank account")
             print(f"Now, your account balance is: Rp. {self.account_balance:,}")
         else:
@@ -41,6 +44,9 @@ class AccountBank:
     def withdraw(self, amount):
         if amount > 0 and amount <= self.account_balance:
             self.account_balance -= amount
+            db = DatabaseConnection()
+            db.update_balance(self.account_number, self.account_balance)
+            db.close()
             print(f"Your withdrawal of Rp. {amount} has been succesful")
             print(f"Now, your account balance is: Rp. {self.account_balance:,}")
         else:

@@ -28,3 +28,8 @@ class DatabaseConnection:
         sql = "UPDATE accounts SET account_balance = %s WHERE account_number = %s"
         self.cursor.execute(sql, (new_balance, account_number))
         self.conn.commit()
+
+    def get_account_by_number(self, account_number):
+        sql = "SELECT username, password, account_number, account_balance, pin FROM accounts WHERE account_number = %s"
+        self.cursor.execute(sql, (account_number,))
+        return self.cursor.fetchone()

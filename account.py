@@ -22,6 +22,13 @@ class AccountBank:
         else:
             print("amount must be positive number")
 
+    def depositTrf(self, amount):
+        if amount > 0:
+            self.account_balance += amount
+            self.db.update_balance(self.account_number, self.account_balance)
+        else:
+            print("amount must be positive number")
+
     def withdraw(self, amount):
         if amount > 0 and amount <= self.account_balance:
             self.account_balance -= amount
@@ -34,8 +41,9 @@ class AccountBank:
     def transfer(self, amount, recipient_account):
         if amount > 0 and amount <= self.account_balance:
             self.account_balance -= amount
-            recipient_account.deposit(amount)
-            print(f"Transfer to {recipient_account.username} from {self.username} has been successful")
+            recipient_account.depositTrf(amount)
+            print(f"Rp. {amount:,} Transferred to {recipient_account.username} from {self.username} has been successful")
+            print(f"Now, your account balance is: Rp. {self.account_balance:,}")
         else:
             print("Transfer failed: Insufficient balance or invalid account")
 
@@ -53,6 +61,16 @@ class AccountBank:
                 break
             else:
                 print("Your input invalid")
+
+    @staticmethod
+    def get_account_object_by_number(account_number):
+        db = DatabaseConnection()
+        account_data = db.get_account_by_number(account_number)
+        db.close()
+        if account_data:
+            username, password, account_number, account_balance, pin = account_data
+            return AccountBank(username, password, account_number, account_balance, pin)
+        return None
 
     def showMenu(self):
         print(f"\nWelcome, {self.username}!")

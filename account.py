@@ -11,13 +11,13 @@ class AccountBank:
         self.db = DatabaseConnection()
     
     def balance_check(self):
-        print(f"Account balance for {self.username} ({self.account_number}) is: Rp. {self.account_balance}")
+        print(f"Account balance for {self.username} ({self.account_number}) is: Rp. {self.account_balance:,}")
 
     def deposit(self, amount):
         if amount > 0:
             self.account_balance += amount
             self.db.update_balance(self.account_number, self.account_balance)
-            print(f"Rp. {amount} transferred to your bank account")
+            print(f"Rp. {amount:,} transferred to your bank account")
             print(f"Now, your account balance is: Rp. {self.account_balance:,}")
         else:
             print("amount must be positive number")
@@ -33,7 +33,7 @@ class AccountBank:
         if amount > 0 and amount <= self.account_balance:
             self.account_balance -= amount
             self.db.update_balance(self.account_number, self.account_balance)
-            print(f"Your withdrawal of Rp. {amount} has been succesful")
+            print(f"Your withdrawal of Rp. {amount:,} has been succesful")
             print(f"Now, your account balance is: Rp. {self.account_balance:,}")
         else:
             print(f"Withdraw failed: Your balance is insufficientor or invalid amount")

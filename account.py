@@ -8,7 +8,6 @@ class AccountBank:
         self.account_number = account_number
         self.account_balance = account_balance
         self.pin = pin
-        self.db = DatabaseConnection()
     
     def balance_check(self):
         print(f"Account balance for {self.username} ({self.account_number}) is: Rp. {self.account_balance:,}")
@@ -16,34 +15,43 @@ class AccountBank:
     def deposit(self, amount):
         if amount > 0:
             self.account_balance += amount
-            self.db.update_balance(self.account_number, self.account_balance)
+            db = DatabaseConnection()
+            db.update_balance(self.account_number, self.account_balance)
+            db.record_transaction(self.username, "Deposit", amount)  # record transaction
             print(f"Rp. {amount:,} transferred to your bank account")
             print(f"Now, your account balance is: Rp. {self.account_balance:,}")
-        else:
-            print("amount must be positive number")
-
-    def depositTrf(self, amount):
-        if amount > 0:
-            self.account_balance += amount
-            self.db.update_balance(self.account_number, self.account_balance)
+            db.close()
         else:
             print("amount must be positive number")
 
     def withdraw(self, amount):
         if amount > 0 and amount <= self.account_balance:
             self.account_balance -= amount
-            self.db.update_balance(self.account_number, self.account_balance)
+            db = DatabaseConnection()
+            db.update_balance(self.account_number, self.account_balance)
+
+            db.record_transaction(self.username, "Withdraw", amount) #record transaction
             print(f"Your withdrawal of Rp. {amount:,} has been succesful")
             print(f"Now, your account balance is: Rp. {self.account_balance:,}")
+            db.close()
         else:
             print(f"Withdraw failed: Your balance is insufficientor or invalid amount")
 
     def transfer(self, amount, recipient_account):
         if amount > 0 and amount <= self.account_balance:
             self.account_balance -= amount
-            recipient_account.depositTrf(amount)
+            recipient_account.account_balance += amount
+
+            db = DatabaseConnection()
+            db.update_balance(self.account_number, self.account_balance)
+            db.update_balance(recipient_account.account_number, recipient_account.account_balance)
+
+            db.record_transaction(self.username, "Transfer", amount, recipient_account.username)  # record transaction Transfer
+            db.record_transaction(recipient_account.username, "Received", amount, self.username)  # record transaction Received
+            
             print(f"Rp. {amount:,} Transferred to {recipient_account.username} from {self.username} has been successful")
             print(f"Now, your account balance is: Rp. {self.account_balance:,}")
+            db.close()
         else:
             print("Transfer failed: Insufficient balance or invalid account")
 

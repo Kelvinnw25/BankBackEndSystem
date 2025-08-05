@@ -33,3 +33,13 @@ class DatabaseConnection:
         sql = "SELECT username, password, account_number, account_balance, pin FROM accounts WHERE account_number = %s"
         self.cursor.execute(sql, (account_number,))
         return self.cursor.fetchone()
+    
+    def record_transaction(self, username, type, amount, target_account=None):
+        sql = "INSERT INTO transactions (username, type, amount, target_account) VALUES (%s, %s, %s, %s)"
+        self.cursor.execute(sql, (username, type, amount, target_account))
+        self.conn.commit()
+
+    def get_transaction_history(self, username):
+        sql = "SELECT type, amount, target_account, timestamp FROM transactions WHERE username = %s ORDER BY timestamp DESC"
+        self.cursor.execute(sql, (username,))
+        return self.cursor.fetchall()

@@ -32,18 +32,39 @@ def run():
         elif option == 4:
             amount = float(input("Enter amount to transfer: "))
             recipient_account_number = input("Enter recipient account number: ")
-            recipient_account = AccountBank.get_account_object_by_number(recipient_account_number)
-            if recipient_account:
-                user.transfer(amount, recipient_account)
-            else:
-                print("Transfer failed: Recipient account not found.")
+
+            attempt = 0
+            while attempt < 3:
+                pinInput = input("Enter your 6-digit pin: ")
+                if pinInput == user.pin:
+                    recipient_account = AccountBank.get_account_object_by_number(recipient_account_number)
+                    if recipient_account:
+                        user.transfer(amount, recipient_account)
+                        break
+                    else:
+                        print("Recipient account not found.")
+                        break
+                else:
+                    attempt += 1
+                    print(f"Incorrect pin. You have {3 - attempt} attempts left.")
 
         elif option == 5:
-            print("nih historynya")
+            db = DatabaseConnection()
+            transactions = db.get_transaction_history(user.username)
+            db.close()
+
+            print("\n=== Transaction History ===")
+            for type, amount, target_account, timestamp in transactions:
+                if target_account:
+                    if type == "Transfer":
+                        print(f"{timestamp} | {type} of Rp. {amount:,} to {target_account}")
+                    elif type == "Received":
+                        print(f"{timestamp} | {type} of Rp. {amount:,} from {target_account}")
+                else:
+                    print(f"{timestamp} | {type} of Rp. {amount:,}")
 
         elif option == 6:
             print("Logging out...\n")
-            user.db.close()
             run()  #restart
             
         else:

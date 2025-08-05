@@ -15,9 +15,16 @@ class DatabaseConnection:
         self.cursor.execute(sql, (username, password, account_number, account_balance, pin))
         self.conn.commit()
 
-    def get_account(self, username, password):
+    #for check credentials when login (username and password)
+    def get_accountLogin(self, username, password):
         sql = "SELECT username, password, account_number, account_balance, pin FROM accounts WHERE username = %s AND password = %s"
         self.cursor.execute(sql, (username, password))
+        return self.cursor.fetchone()
+    
+    #for check credentials when signup (username only)
+    def get_accountSignup(self, username):
+        sql = "SELECT username, password, account_number, account_balance, pin FROM accounts WHERE username = %s"
+        self.cursor.execute(sql, (username,))
         return self.cursor.fetchone()
 
     def close(self):

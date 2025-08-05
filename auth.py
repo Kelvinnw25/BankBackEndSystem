@@ -5,30 +5,45 @@ def signup():
     # Initialize database connection
     db = DatabaseConnection()
 
-    # input user details
-    print("\n=== Sign Up ===")
-    username = input("Enter username: ")
-    if db.get_account(username, ""):
-        print("Username already exists. Please choose a different username.")
-        return None
+    # use while true to ensure valid input, as long as the condition is true, it will keep asking for input
+    # input username
+    while True:
+        print("\n=== Sign Up ===")
+        username = input("Enter username: ")
+        if db.get_accountSignup(username): 
+            print("Username already exists. Please choose a different username.")
+        elif not username: 
+            print("Username cannot be empty.")
+        else: 
+            break
     
-    password = input("Enter password: ")
-    if len(password) < 8:
-        print("Password must be at least 8 characters long.")
-        return None
-    elif not any(char.isdigit() for char in password):
-        print("Password must contain at least one digit.")
-        return None
+    # input password
+    while True:
+        password = input("Enter password: ").password()
+        if len(password) < 8: 
+            print("Password must be at least 8 characters long.")
+        elif not any(char.isdigit() for char in password): 
+            print("Password must contain at least one digit.")
+        else: 
+            break
+
+    # input account number
+    while True:
+        account_number = input("Enter account number: ")
+        if db.get_account_by_number(account_number): 
+            print("Account number already exists. Please choose a different account number.")
+        elif not account_number.isdigit() or len(account_number) != 8:
+            print("Account number must be exactly 8 digits.")
+        else: 
+            break
     
-    account_number = input("Enter account number: ")
-    if db.get_account_by_number(account_number):
-        print("Account number already exists. Please choose a different account number.")
-        return None
-    
-    pin = input("Set your 6-digit pin: ")
-    if len(pin) != 6 or not pin.isdigit():
-        print("Pin must be exactly 6 digits.")
-        return None
+    # input pin
+    while True:
+        pin = input("Set your 6-digit pin: ")
+        if len(pin) != 6 or not pin.isdigit(): 
+            print("Pin must be exactly 6 digits.")
+        else: 
+            break
 
     # create account
     account = AccountBank(username, password, account_number, pin=pin)
@@ -48,7 +63,7 @@ def login():
     password = input("Enter password: ")
 
     # get account from database
-    data = db.get_account(username, password)
+    data = db.get_accountLogin(username, password)
     db.close()
 
     if data:

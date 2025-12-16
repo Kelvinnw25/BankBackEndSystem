@@ -19,7 +19,7 @@ def signup():
     
     # input password
     while True:
-        password = input("Enter password: ").password()
+        password = input("Enter password: ")
         if len(password) < 8: 
             print("Password must be at least 8 characters long.")
         elif not any(char.isdigit() for char in password): 
